@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<?xml-model
+  href="http://download.ros.org/schema/package_format3.xsd"
+  schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>reacquisition_first_ring_raw</name>
+  <version>0.1.0</version>
+  <description>
+    第一环最简原始数据中间件 (Windows 11, 无 ROS 2 运行时, 无 Gazebo, 无 PX4, 无 C++).
+    当前仅保留 package.xml 作为未来 ROS 2 适配的占位, 实际运行不依赖 ROS 2.
+  </description>
+  <maintainer email="dev@example.invalid">reacquisition-ws</maintainer>
+  <license>Proprietary</license>
+
+  <!-- 故意不声明任何 exec_depend / build_depend, 保证 Windows 最简版零运行时依赖. -->
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

@@ -1,0 +1,16 @@
+# Editor / OS cruft
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Python virtualenvs (if anyone creates one at this level)
+.venv/
+venv/
+env/
+
+# Test artifacts that the inner .gitignore does not cover
+reacquisition_ws/.pytest-tmp/
