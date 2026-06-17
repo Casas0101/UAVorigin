@@ -1,0 +1,162 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="first_ring_flat_world">
+    <gravity>0 0 -9.81</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type="adiabatic"/>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 20 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.2 -1</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="ground_link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>60 60</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>60 60</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.32 0.34 0.32 1</ambient>
+            <diffuse>0.32 0.34 0.32 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="field_reference_grid">
+      <static>true</static>
+      <link name="grid_link">
+        <visual name="x_axis">
+          <pose>0 0 0.011 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>30 0.08 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.1 0.1 1</ambient>
+            <diffuse>0.8 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="y_axis">
+          <pose>0 0 0.012 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.08 30 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.2 0.8 1</ambient>
+            <diffuse>0.1 0.2 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="downward_uav">
+      <static>true</static>
+      <pose>0 0 10 0 0 0</pose>
+      <link name="base_link">
+        <visual name="body">
+          <geometry>
+            <box>
+              <size>0.7 0.7 0.18</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.05 0.05 0.05 1</ambient>
+            <diffuse>0.08 0.08 0.08 1</diffuse>
+          </material>
+        </visual>
+        <visual name="camera_marker">
+          <pose>0 0 -0.16 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.12</radius>
+              <length>0.08</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.02 0.02 0.02 1</ambient>
+            <diffuse>0.02 0.02 0.02 1</diffuse>
+          </material>
+        </visual>
+        <sensor name="downward_camera" type="camera">
+          <pose>0 0 -0.2 0 1.57079632679 0</pose>
+          <always_on>true</always_on>
+          <update_rate>30</update_rate>
+          <topic>/camera/image_raw</topic>
+          <camera>
+            <horizontal_fov>1.3962634</horizontal_fov>
+            <image>
+              <width>1280</width>
+              <height>720</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.05</near>
+              <far>80</far>
+            </clip>
+          </camera>
+        </sensor>
+      </link>
+    </model>
+
+    <model name="ground_target">
+      <static>true</static>
+      <pose>2 1 0.04 0 0 0</pose>
+      <link name="target_link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.45</radius>
+              <length>0.08</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.45</radius>
+              <length>0.08</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1.0 0.05 0.03 1</ambient>
+            <diffuse>1.0 0.05 0.03 1</diffuse>
+            <specular>0.2 0.02 0.02 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

@@ -288,6 +288,15 @@ def cache_is_fresh(
     return arrival_delta <= max_age_ns
 
 
+def _uav_cache_stamp_ns(msg: Any, uav_state_msg_type: str) -> int | None:
+    if uav_state_msg_type == UAV_MSG_PX4_ODOM:
+        # PX4 VehicleOdometry timestamps are PX4 internal microsecond clocks, not
+        # necessarily comparable with Gazebo image header stamps. Use arrival
+        # time for freshness while preserving the PX4 stamp in the raw frame.
+        return None
+    return _header_stamp_ns(msg)
+
+
 class RawFramePublisherNode(Node):
     """Publish FirstRingRawFrame JSON from ROS 2 input topics."""
 
@@ -395,14 +404,9 @@ class RawFramePublisherNode(Node):
         )
 
     def _on_uav_state(self, msg: Any) -> None:
-        stamp_ns = (
-            _header_stamp_ns(msg)
-            if self.uav_state_msg_type == UAV_MSG_ODOM
-            else int((getattr(msg, "timestamp_sample", 0) or getattr(msg, "timestamp", 0)) * NS_PER_US)
-        )
         self._uav_state = CachedMessage(
             msg=msg,
-            stamp_ns=stamp_ns,
+            stamp_ns=_uav_cache_stamp_ns(msg, self.uav_state_msg_type),
             arrival_ns=self._now_ns(),
         )
 

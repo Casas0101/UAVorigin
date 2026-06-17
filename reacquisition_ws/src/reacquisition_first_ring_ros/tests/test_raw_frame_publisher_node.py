@@ -144,6 +144,11 @@ def test_cache_freshness_accepts_arrival_time_when_stamp_domains_differ():
     assert node.cache_is_fresh(cache, sample_stamp_ns=10_000_000_000_000, now_ns=1_100, max_age_sec=1.0)
 
 
+def test_px4_uav_cache_uses_arrival_time_for_freshness():
+    msg = SimpleNamespace(timestamp=20_000_000, timestamp_sample=10_000_000)
+    assert node._uav_cache_stamp_ns(msg, node.UAV_MSG_PX4_ODOM) is None
+
+
 def test_launch_bool_strings_are_parsed_explicitly():
     assert node._as_bool("true") is True
     assert node._as_bool("false") is False

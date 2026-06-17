@@ -1,0 +1,106 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="first_ring_px4_target_world">
+    <gravity>0 0 -9.81</gravity>
+    <atmosphere type="adiabatic"/>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <light name="sun" type="directional">
+      <pose>0 0 40 0 0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <diffuse>0.85 0.85 0.82 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.35 0.15 -1</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="ground_link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>80 80</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>80 80</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.30 0.33 0.30 1</ambient>
+            <diffuse>0.30 0.33 0.30 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="field_reference_grid">
+      <static>true</static>
+      <link name="grid_link">
+        <visual name="x_axis">
+          <pose>0 0 0.011 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>40 0.08 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.1 0.1 1</ambient>
+            <diffuse>0.8 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+        <visual name="y_axis">
+          <pose>0 0 0.012 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.08 40 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.2 0.8 1</ambient>
+            <diffuse>0.1 0.2 0.8 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ground_target">
+      <static>true</static>
+      <pose>2 1 0.04 0 0 0</pose>
+      <link name="target_link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.45</radius>
+              <length>0.08</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.45</radius>
+              <length>0.08</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1.0 0.05 0.03 1</ambient>
+            <diffuse>1.0 0.05 0.03 1</diffuse>
+            <specular>0.2 0.02 0.02 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>
