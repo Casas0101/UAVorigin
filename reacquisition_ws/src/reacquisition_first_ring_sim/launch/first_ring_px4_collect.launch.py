@@ -20,7 +20,7 @@ def generate_launch_description():
 
     args = [
         DeclareLaunchArgument("start_gazebo", default_value="true"),
-        DeclareLaunchArgument("gz_args", default_value=[world_path, " -r"]),
+        DeclareLaunchArgument("gz_args", default_value=[world_path, " -r -s"]),
         DeclareLaunchArgument("use_sim_time", default_value="true"),
         DeclareLaunchArgument("image_topic", default_value="/camera"),
         DeclareLaunchArgument("camera_info_topic", default_value="/camera/camera_info"),
