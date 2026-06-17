@@ -1,10 +1,13 @@
 from setuptools import find_packages, setup
 
+
+package_name = "reacquisition_first_ring_raw"
+
 # 仅 Python 包, 不引入 ROS 2 / Gazebo / PX4 / C++ 依赖.
 # 详见 工程文档/低智能AI_Windows11无仿真无C++生成指南.md.
 
 setup(
-    name="reacquisition_first_ring_raw",
+    name=package_name,
     version="0.1.0",
     description=(
         "第一环最简原始数据中间件: 纯 Python, 无 ROS 2 / Gazebo / PX4 / C++ 依赖. "
@@ -16,6 +19,10 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     python_requires=">=3.8",
     install_requires=[],
+    data_files=[
+        ("share/ament_index/resource_index/packages", [f"resource/{package_name}"]),
+        (f"share/{package_name}", ["package.xml"]),
+    ],
     extras_require={
         "dev": ["pytest>=7.0"],
     },
