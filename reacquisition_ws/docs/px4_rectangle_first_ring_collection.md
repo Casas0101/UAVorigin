@@ -88,6 +88,8 @@ source install/setup.bash
 ros2 launch reacquisition_first_ring_sim first_ring_px4_collect.launch.py
 ```
 
+默认使用 `gz sim -s -r` server/headless 模式启动 Gazebo world，避免 WSLg/OpenGL GUI 渲染崩溃。这个模式仍然会启动 Gazebo server、传感器和 transport，PX4 可以连接世界。
+
 这个 launch 会启动：
 
 - Gazebo 世界 `first_ring_px4_target_world.sdf`;
@@ -102,7 +104,7 @@ ros2 launch reacquisition_first_ring_sim first_ring_px4_collect.launch.py
 
 ```bash
 cd ~/PX4-Autopilot
-PX4_GZ_STANDALONE=1 make px4_sitl gz_x500_mono_cam_down
+PX4_GZ_STANDALONE=1 PX4_GZ_WORLD=first_ring_px4_target_world make px4_sitl gz_x500_mono_cam_down
 ```
 
 如果你的 PX4 版本没有 `gz_x500_mono_cam_down`，先列出可用目标：
@@ -112,6 +114,19 @@ make list_config_targets | grep gz_x500
 ```
 
 可退回到带相机的可用模型，例如 `gz_x500_mono_cam`，但需要确认相机朝向和 topic。
+
+如果 PX4 持续输出 `Waiting for Gazebo world...`，先确认 Gazebo world 是否存在：
+
+```bash
+gz topic -l | grep first_ring_px4_target_world
+```
+
+若没有输出，说明 Gazebo server 没有成功启动。若看到 `Ogre::RenderingAPIException`、`Out of GPU memory or driver refused`、`Ogre::UnimplementedException`，这是 WSLg/OpenGL 渲染层崩溃，不是第一环节点错误。保持默认 headless launch，或显式运行：
+
+```bash
+ros2 launch reacquisition_first_ring_sim first_ring_px4_collect.launch.py \
+  gz_args:="$(ros2 pkg prefix reacquisition_first_ring_sim)/share/reacquisition_first_ring_sim/worlds/first_ring_px4_target_world.sdf -r -s"
+```
 
 ### 终端 4：打开 QGroundControl，导入 mission
 
